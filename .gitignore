@@ -1,0 +1,53 @@
+# Ignore Python bytecode files, editor temporary files, and database files
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+
+# Ignore the virtual environment
+venv/
+
+# Ignore local settings
+*.env
+
+# Ignore the media directory (where user-uploaded files are stored)
+media/
+
+
+# Ignore log files
+*.log
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# Ignore environment configuration files
+.env
+
+# Ignore compiled files
+*.pyc
+
+# Ignore secret key file
+*.key
+
+# Ignore the local database configuration
+db.sqlite3
+
+# Ignore coverage reports
+htmlcov/
+.coverage
+
+# Ignore testing database
+test_db.sqlite3
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore environment-specific files
+.env
+.env.local
+.env.*.local
+
+# Ignore pipenv files
+Pipfile
+Pipfile.lock
