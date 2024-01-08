@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from store.models import Product
 from .models import Cart, CartItem
 
@@ -49,9 +49,16 @@ def remove_cart(request, product_id):
             cart_item.delete()
 
     except (Cart.DoesNotExist, CartItem.DoesNotExist):
-       
-        pass  
+        pass
 
+    return redirect("cart")
+
+
+def remove_cart_item(request, product_id):
+    cart = Cart.objects.get(cart_id=_cart_id(request))
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.get(product=product, cart=cart)
+    cart_item.delete()
     return redirect("cart")
 
 
