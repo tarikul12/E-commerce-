@@ -50,15 +50,16 @@
       <!-- col.// -->
       <a href="{% url 'store' %}" class="btn btn-outline-primary" style="margin-left: 5px; padding: 5px 10px;">Store</a>
       <div class="col-lg col-md-6 col-sm-12 col" style="padding-left: 10px;">
-        <form action="{% url 'search'  %}" class="search" method="GET">
+        <form class="search" method="GET" id="search-form">
           <div class="input-group w-100">
-            <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" />
-
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-            </div>
+             <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" id="search-input" />
+       
+             <div class="input-group-append">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+             </div>
           </div>
-        </form>
+       </form>
+       <div id="search-results"></div>
         <!-- search-wrap .end// -->
       </div>
       <!-- col.// -->
@@ -86,3 +87,5 @@
   </div>
   <!-- container.// -->
 </section>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'js/search.js' %}" data-url="{% url 'search' %}"></script>

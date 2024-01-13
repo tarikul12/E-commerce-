@@ -7,6 +7,7 @@ from carts.models import CartItem
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.db.models import Q
+from django.http import JsonResponse
 
 
 def home(request):
@@ -64,8 +65,15 @@ def search(request):
                 Q(description__icontains=keyword) | Q(product_name__icontains=keyword)
             )
             product_count = products.count()
-    context = {
-        "products": products,
-        "product_count": product_count,
-    }
-    return render(request, "store/store.html", context)
+            data = {
+                "products": [
+                    {
+                        "product_name": product.product_name,
+                        "description": product.description,
+                    }
+                    for product in products
+                ],
+                "product_count": product_count,
+            }
+            return JsonResponse(data)
+    return JsonResponse({"error": "Invalid request"})
