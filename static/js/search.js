@@ -1,5 +1,3 @@
-// search.js
-
 $(document).ready(function () {
     var searchUrl = $('script[src*="search.js"]').data('url');
 
