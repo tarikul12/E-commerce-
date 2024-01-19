@@ -12,6 +12,7 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
+import requests
 
 def register(request):
     if request.method == 'POST':
@@ -39,7 +40,6 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            # messages.success(request, 'Thank you for registering with us. We have sent you a verification email to your email address [rathan.kumar@gmail.com]. Please verify it.')
             return redirect('/accounts/login/?command=verification&email='+email)
     else:
         form = RegistrationForm()
@@ -102,7 +102,6 @@ def login(request):
             url = request.META.get('HTTP_REFERER')
             try:
                 query = requests.utils.urlparse(url).query
-                # next=/cart/checkout/
                 params = dict(x.split('=') for x in query.split('&'))
                 if 'next' in params:
                     nextPage = params['next']
@@ -123,7 +122,21 @@ def logout(request):
 
 
 def activate(request, uidb64, token):
-    return HttpResponse("ok")
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Congratulations! Your account is activated.')
+        return redirect('login')
+    else:
+        messages.error(request, 'Invalid activation link')
+        return redirect('register')
+
 
 
 @login_required(login_url="login")
