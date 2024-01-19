@@ -22,7 +22,7 @@ class MyAccountManager(BaseUserManager):
 
     def create_superuser(self, first_name, last_name, email, username, password):
         user = self.create_user(
-            email=email,
+            email=self.normalize_email(email),
             username=username,
             password=password,
             first_name=first_name,
@@ -55,6 +55,9 @@ class Account(AbstractBaseUser):
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
     objects = MyAccountManager()
+    
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
     def _str_(self):
         return self.email
