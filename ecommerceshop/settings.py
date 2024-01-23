@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'wkhtmltopdf',
     'store',
     'category',
     'accounts',
@@ -78,6 +79,7 @@ WSGI_APPLICATION = 'ecommerceshop.wsgi.application'
 
 AUTH_USER_MODEL='accounts.Account'
 
+WKHTMLTOPDF_BIN = '/path/to/wkhtmltopdf'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
