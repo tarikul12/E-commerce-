@@ -32,6 +32,7 @@ class MyAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_active = True
         user.is_staff = True
+        user.is_customr =True 
         user.is_superuser = True
         user.save(using=self._db)
         return user
@@ -50,7 +51,15 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
-
+    is_customr = models.BooleanField(default=False)
+    USER_TYPE_CHOICES = (
+        ('admin', 'Admin'),
+        ('staff', 'Staff'),
+        ('customer', 'Customer'),
+        ('superadmin', 'Super Admin'),
+    )
+    
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='customer')     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
@@ -67,3 +76,21 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, add_lebel):
         return True
+    
+class UserProfile(models.Model):
+    user =models.ForeignKey(Account,on_delete=models.CASCADE)
+    address_line_1 =models.CharField(blank=True,max_length=100)
+    address_line_2 =models.CharField(blank=True,max_length=100)
+    profile_picture =models.ImageField(blank=True, upload_to ='userprofile')
+    city =models.CharField(blank=True,max_length=20)
+    state =models.CharField(blank=True,max_length=20)
+    country = models.CharField(blank=True,max_length=20)
+    
+    def _str_(self):
+            return self.user.full_name
+        
+    def full_address(self):
+        return f'{self.address_line_1} {self.address_line_2}'
+    
+
+   
