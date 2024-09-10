@@ -12,6 +12,7 @@ from .forms import ReviewForm
 from django.contrib import messages
 from orders .models import OrderProduct
 
+
 def home(request):
     products = Product.objects.all().filter(is_available=True)
 
@@ -79,27 +80,15 @@ def product_detail(request, category_slug, product_slug):
     return render(request, "store/product_detail.html", context)
 
 
-def search(request):
-    if "keyword" in request.GET:
-        keyword = request.GET["keyword"]
-        if keyword:
-            products = Product.objects.order_by("-created_date").filter(
-                Q(description__icontains=keyword) | Q(product_name__icontains=keyword)
-            )
-            product_count = products.count()
-            data = {
-                "products": [
-                    {
-                        "product_name": product.product_name,
-                        "description": product.description,
-                    }
-                    for product in products
-                ],
-                "product_count": product_count,
-            }
-            return JsonResponse(data)
-    return JsonResponse({"error": "Invalid request"})
-
+def autocomplete(request):
+    keyword = request.GET.get("keyword", "").strip()
+    if keyword:
+        products = Product.objects.filter(
+            Q(description__icontains=keyword) | Q(product_name__icontains=keyword)
+        ).order_by("product_name")[:10]  
+        product_names = [product.product_name for product in products]
+        return JsonResponse({"products": product_names})
+    return JsonResponse({"products": []})
 
 def submit_review(request, product_id):
     url = request.META.get("HTTP_REFERER")

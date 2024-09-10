@@ -59,6 +59,7 @@ def register(request):
     context = {
         "form": form,
     }
+    print("Successfully SignUp")
     return render(request, "accounts/register.html", context)
 
 
@@ -159,10 +160,14 @@ def dashboard(request):
     orders_count = orders.count()
     userProfile =UserProfile.objects.get(user_id =request.user.id)
     user_types = request.user.user_type
+    last_login =request.user.last_login
+    date_joined=request.user.date_joined
     context = {
         "orders_count": orders_count,
         "user_types": user_types,
-        'userProfile':userProfile
+        'userProfile':userProfile,
+        "last_login":last_login,
+        "date_joined":date_joined
     }
     return render(request, "accounts/dashboard.html", context)
 

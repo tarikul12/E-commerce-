@@ -1,0 +1,6 @@
+<!-- chatbot.html -->
+<form method="post" action="{% url 'chatbot' %}">
+    {% csrf_token %}
+    <input type="text" name="message">
+    <input type="submit" value="Send">
+  </form>

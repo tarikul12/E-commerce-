@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0fnu+@mabnpps+lutj6=a2yurt@p6r(4x^2ab#x$9=mcr%!ad^
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+TAILWIND_APP_NAME = "theme"
 
 # Application definition
 
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     'carts',
     'orders',
+    'chat',
+    'tailwind',
+    
 ]
 
 MIDDLEWARE = [

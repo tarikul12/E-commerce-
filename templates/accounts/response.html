@@ -1,0 +1,9 @@
+<!-- response.html -->
+
+<h1>Intent: {{ intent }}</h1>
+<h2>Entities:</h2>
+<ul>
+  {% for entity in entities %}
+    <li>{{ entity }}</li>
+  {% endfor %}
+</ul>

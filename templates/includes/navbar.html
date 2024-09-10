@@ -1,5 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <header class="section-header">
   <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
     <div class="container">
@@ -45,7 +46,7 @@
             <i class="fa fa-bars"></i> All category
           </button>
           <div class="dropdown-menu">
-			<a class="dropdown-item" href="{% url 'store'  %}">All Products</a>
+			      <a class="dropdown-item" href="{% url 'store'  %}">All Products</a>
             {% for category in links %}
             <a class="dropdown-item" href="{{category.get_url}}">{{ category.category_name }}</a>
             {% endfor %}
@@ -58,13 +59,12 @@
       <div class="col-lg col-md-6 col-sm-12 col" style="padding-left: 10px;">
         <form class="search" method="GET" id="search-form">
           <div class="input-group w-100">
-             <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" id="search-input" />
-       
-             <div class="input-group-append">
-                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-             </div>
+              <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" id="search-input" />
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+              </div>
           </div>
-       </form>
+      </form>      
        <div id="search-results"></div>
         <!-- search-wrap .end// -->
       </div>
@@ -106,5 +106,29 @@
   </div>
   <!-- container.// -->
 </section>
+<script>
+  $(document).ready(function() {
+      $("#search-input").autocomplete({
+          source: function(request, response) {
+              $.ajax({
+                  url: "autocomplete/",
+                  data: {
+                      keyword: request.term
+                  },
+                  success: function(data) {
+                      response(data.products.map(product => product.product_name));
+                  }
+              });
+          },
+          minLength: 2,
+          select: function(event, ui) {
+              $("#search-input").val(ui.item.value);
+              $("#search-form").submit();
+          }
+      });
+  });
+</script>
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="{% static 'js/search.js' %}" data-url="{% url 'search' %}"></script>
+<script src="https://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

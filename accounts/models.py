@@ -93,4 +93,5 @@ class UserProfile(models.Model):
         return f'{self.address_line_1} {self.address_line_2}'
     
 
-   
+
+
